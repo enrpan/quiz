@@ -1,5 +1,18 @@
-<table>
-<% var i; for (i=0; i<quizes.length; i++) { %>
-	<tr><td><a href="quizes/<%= quizes[i].id %>"><%= quizes[i].pregunta %></a></td></tr>
-<% } %>
+<div style="text-align:center;">
+<table style="margin: 0 auto;">
+<% if ( quizes.length===0 ) { %>
+	<tr><td>No hay preguntas que coincidan con el criterio de búsqueda indicado...</td></tr>
+<% } else {
+	var i; for (i=0; i<quizes.length; i++) { %>
+		<tr><td><a href="quizes/<%= quizes[i].id %>"><%= quizes[i].pregunta %></a></td></tr>
+	<% }} %>
 </table>
+</div>
+
+<br>
+
+<form method="get" action="/quizes">
+  Buscar preguntas con el siguiente contenido:<br>
+  <input type="text" name="search" value="Texto a buscar" >
+  <input type="submit" value="Enviar" >
+</form> 
