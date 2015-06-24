@@ -4,7 +4,10 @@
 	<tr><td>No hay preguntas que coincidan con el criterio de búsqueda indicado...</td></tr>
 <% } else {
 	var i; for (i=0; i<quizes.length; i++) { %>
-		<tr><td><a href="quizes/<%= quizes[i].id %>"><%= quizes[i].pregunta %></a></td></tr>
+		<tr>
+			<td><a href="quizes/<%= quizes[i].id %>"><%= quizes[i].pregunta %></a></td>
+			<td><a href="quizes/<%= quizes[i].id %>/edit"><button>Editar</button></a></td>
+		</tr>
 	<% }} %>
 </table>
 <a href="/quizes/new"><button type="button">Crear pregunta</button></a>
