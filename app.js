@@ -39,6 +39,39 @@ app.use( function(req, res, next) {
     next();
 });
 
+// MW para detectar inactividad y hacer logout
+app.use ( function(req, res, next) {
+    // Si se sobrepasan 2 minutos de inactividad DENTRO DE UNA SESION, destruir session
+
+    if ( !req.session.user ) {
+        // NO hay sesion establecida --> continuar sin hacer nada
+        next();
+        return;
+    }
+
+    // Hay sesion --> comprobamos tiempo de inactividad...
+
+    var now = new Date();
+
+    if ( req.session.timestamp ) {
+        var timestamp = new Date(req.session.timestamp);
+        var difTime = now.getTime()-timestamp.getTime();
+        if ( difTime > 120000 ) {
+            // se ha sobrepasado el tiempo de inactividad...
+            console.log('Sobrepasado tiempo de inactividad...');
+            delete req.session.user;
+            delete req.session.timestamp;
+            req.session.errors = [{"message": 'Su sesión ha caducado por inactividad...'}];
+            res.redirect("/login");
+            return;
+        } 
+    } 
+
+    req.session.timestamp = now;
+    next();
+    
+});
+
 app.use('/', routes);
 
 // catch 404 and forward to error handler
